@@ -7,14 +7,20 @@ class AddTodo extends Component {
     super();
     this.state = {
       content: "",
+      date: "",
+      preConditions: "",
+      acceptanceCriteria: ""
     };
+    
   }
   // The handleChange function updates the react state with the new input value provided from the user.
   // "event" is the defined action a user takes. In this case, the event is triggered when the user types something
   // into the text field.
   handleChange = (event) => {
+    const { name, value } = event.target;
     this.setState({
-      content: event.target.value,
+      [name]: value,
+
     });
   };
   // The handleSubmit function collects the forms input and puts it into the react state.
@@ -24,9 +30,17 @@ class AddTodo extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     if (this.state.content.trim()) {
-      this.props.addTodo(this.state);
+      this.props.addTodo({
+        content: this.state.content,
+        preConditions: this.state.preConditions,
+        acceptanceCriteria: this.state.acceptanceCriteria,
+        date: new Date().toLocaleString('en-US')
+      });
       this.setState({
         content: "",
+        date:"",
+        preConditions: "",
+        acceptanceCriteria: "",
       });
     }
   };
@@ -43,9 +57,29 @@ class AddTodo extends Component {
         <TextField
           label="Add New Item"
           variant="outlined"
+          name="content"
           onChange={this.handleChange}
           value={this.state.content}
           data-testid="new-item-textfield"
+          style={{ marginTop: 10 }}
+        />
+        <TextField
+          label="Pre-conditions"
+          variant="outlined"
+          name="preConditions"
+          onChange={this.handleChange}
+          value={this.state.preConditions}
+          data-testid="pre-conditions-textfield"
+          style={{ marginTop: 10 }}
+        />
+        <TextField
+          label="Acceptance Criteria"
+          variant="outlined"
+          name="acceptanceCriteria"
+          onChange={this.handleChange}
+          value={this.state.acceptanceCriteria}
+          data-testid="acceptance-criteria-textfield"
+          style={{ marginTop: 10 }}
         />
         <Button
           style={{ marginLeft: "10px" }}
